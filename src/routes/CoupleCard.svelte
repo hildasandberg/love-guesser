@@ -7,10 +7,10 @@
 	export let handleRightSwipe: () => void;
 	export let handleLeftSwipe: () => void;
 
-	let height: number = 400;
+	export let height: number;
+	export let width: number;
+
 	let swiped: boolean = false;
-	let hide: boolean = false;
-	let width: number = 2 * height;
 	let springProps = { damping: 115, stiffness: 600, mass: 8 };
 
 	// store the pan information into a motion value
@@ -28,6 +28,8 @@
 		// xpanoffset = x.get();
 	};
 
+	let out = 200;
+
 	// called onPan:
 	const handlePanMove = async (e, info) => {
 		if (swiped === false) {
@@ -39,11 +41,14 @@
 			const xoffset = info.offset.x;
 			const xx = Math.sign(xoffset) * Math.pow(Math.abs(xoffset), 1.1);
 			x.set(xx + xpanoffset);
-			if (xoffset > width * 0.9) {
+			console.log(xoffset);
+			if (xoffset > width * 0.5) {
+				out = width;
 				swiped = true;
 				handleRightSwipe();
 			}
-			if (xoffset < width * -0.9) {
+			if (xoffset < -(width * 0.5)) {
+				out = -width;
 				swiped = true;
 				handleLeftSwipe();
 			}
@@ -51,18 +56,28 @@
 	};
 
 	const goBackToStartCoordinates = () => {
-		x.set(0 - width / 2);
+		x.set(0);
 		y.set(0);
 	};
 
-	const handlePanEnd = (e, info) => {
-		console.log('panning end');
-		goBackToStartCoordinates();
+	const handlePanEnd = () => {
+		if (!swiped) {
+			goBackToStartCoordinates();
+		}
 	};
 </script>
 
 {#if visible}
-	<div class="couple-card" transition:fade>
+	<div
+		class="couple-card"
+		in:fade
+		out:fly={{ x: `${out}`, duration: 2000 }}
+		on:introstart={() => console.log('intro started')}
+		on:outrostart={() => console.log('outro started')}
+		on:introend={() => console.log('intro ended')}
+		on:outroend={() => console.log('outro ended')}
+		style="width: {width}px"
+	>
 		<Motion
 			let:motion={inner}
 			onPanStart={handlePanStart}
@@ -73,10 +88,13 @@
 				use:inner
 				draggable="false"
 				class="unselectable card-container"
-				style="transform: translate({$x}px,{$y}px)"
+				style="transform: translate({$x}px,{$y}px); width: {width}px"
 			>
-				<div class="image-container" style="background-image: url({couple.image})" />
-				<div>
+				<div
+					class="image-container"
+					style="width:{width}px; height: {height}px; background-image: url({couple.image}); background-position: center;"
+				/>
+				<div class="name-container">
 					{couple.name}
 				</div>
 			</div>
@@ -87,18 +105,12 @@
 <style>
 	.couple-card {
 		position: relative;
-		min-width: 600px;
-		/* width: 100%; */
 		margin: auto;
-		background-color: blue;
-		/* touch-action: none; */
+		touch-action: none;
 	}
-
 	.card-container {
 		cursor: grab;
 		position: absolute;
-		left: 50%;
-		/* transform: translateX(-50%); */
 	}
 	.unselectable {
 		-webkit-touch-callout: none;
@@ -110,11 +122,16 @@
 	}
 	.image-container {
 		position: relative;
-		/* width: 100%; */
-		width: 600px;
-		min-height: 400px;
 		margin: auto;
 		background-size: cover;
 		background-color: white;
+		border-radius: 14px 14px 0 0;
+	}
+	.name-container {
+		background-color: white;
+		padding: 14px;
+		text-align: center;
+		font-family: 'Abril Fatface', cursive;
+		border-radius: 0 0 14px 14px;
 	}
 </style>

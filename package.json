@@ -24,12 +24,14 @@
 		"svelte": "^3.54.0",
 		"svelte-check": "^3.0.1",
 		"svelte-motion": "^0.11.5",
+		"svelte-preprocess-import-assets": "^1.0.0",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
 		"vite": "^4.3.0"
 	},
 	"type": "module",
 	"dependencies": {
+		"firebase": "^9.22.0",
 		"svelte-gestures": "^1.4.1",
 		"swiper": "^9.3.0",
 		"thumb-ui": "^0.0.17"

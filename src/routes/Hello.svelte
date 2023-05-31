@@ -3,8 +3,15 @@
 	import type { Couple } from '../types/couple.type';
 	import CoupleCard from './CoupleCard.svelte';
 	import { Motion } from 'svelte-motion';
+	import { setDoc, collection } from 'Firebase/firestore';
+	import { doc } from 'Firebase/firestore';
+	import { db } from '../Firebase';
+
+	export const width: number = 300;
+	export const height: number = 1.4 * width;
 
 	export let couples: Couple[];
+	export let userId: string;
 	let currentCoupleIndex: number = 0;
 
 	const nextCouple = () => {
@@ -16,13 +23,21 @@
 		console.log(currentCoupleIndex);
 	};
 
-	const handleRightSwipe = () => {
-		console.log('hello from right swipe');
-		nextCouple();
+	const handleRightSwipe = async () => {
+		saveAnswer(true);
 	};
 
 	const handleLeftSwipe = () => {
-		console.log('hello from left swipe');
+		saveAnswer(false);
+	};
+
+	const saveAnswer = (guess: boolean) => {
+		try {
+			const docRef = doc(collection(db, 'users'), userId);
+			setDoc(docRef, { [currentCoupleIndex]: guess }, { merge: true });
+		} catch (error) {
+			console.log(error);
+		}
 		nextCouple();
 	};
 
@@ -50,14 +65,19 @@
 		</Motion>
 	{/if}
 
-	<div>
+	<div style="width: {width}px">
 		{#if end}
 			<div class="end-text-container">
-				<p class="end-text">Tack för att du swipeade</p>
+				<p class="end-text" style="height: {height}px; width: {width}px;">
+					Tack för att du swipeade
+				</p>
+				<a href="/results">Resultatsidan</a>
 			</div>
 		{:else}
 			{#each couples as couple, i}
 				<CoupleCard
+					{width}
+					{height}
 					{couple}
 					{handleRightSwipe}
 					{handleLeftSwipe}
@@ -87,10 +107,16 @@
 		width: 100vw;
 		display: flex;
 		flex-direction: row;
-		justify-content: space-between;
+		justify-content: center;
+		/* justify-content: space-around; */
+		/* justify-content: space-between; */
 		font-size: 2em;
-		/* width: 100%; */
 		min-height: 400px;
+	}
+	.end-text-container {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
 	}
 	.end-text {
 		font-size: 36px;
@@ -99,16 +125,13 @@
 		font-family: 'Abril Fatface', cursive;
 		margin-top: 0;
 		text-shadow: black 1px 0 10px;
-		height: 400;
-		height: 400;
-		width: 800;
 	}
 	.false-icon-container {
 		display: flex;
 		color: white;
 		justify-content: center;
 		align-items: center;
-		margin: 1em;
+		margin: 4rem;
 		cursor: pointer;
 	}
 	.true-icon-container {
@@ -116,14 +139,10 @@
 		color: white;
 		justify-content: center;
 		align-items: center;
-		margin: 1em;
+		margin: 4rem;
 		cursor: pointer;
 	}
-	.end-text-container {
-		position: absolute;
-		left: 50%;
-		transform: translateX(-50%);
-	}
+
 	.mi {
 		font-size: 5rem;
 	}
