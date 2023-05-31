@@ -2,28 +2,54 @@
 	import { query, getDocs, collection } from 'Firebase/firestore';
 	import BgImage from '$lib/images/jonathan-borba-qRNctETJJ_c-unsplash.jpg';
 	import { db } from '../../Firebase';
-	import type { User } from '../../types/user.type';
+	import AnswerIcon from './AnswerIcon.svelte';
+	import type { Couple } from '../../types/couple.type';
 
 	const q = query(collection(db, 'users'));
 	let users: any[] = [];
 
-	// const getResults = async () => {
-	// 	console.log('helloooo');
-	// 	const q = query(collection(db, 'users'));
-	// 	try {
-	// 		let users: User[] = [];
-	// 		const querySnapshot = await getDocs(q);
-	// 		// querySnapshot.forEach((user) => {
-	// 		// 	users.push({ ...user.data(), name: user.name });
-	// 		// });
-	// 		console.log(querySnapshot);
-	// 		// console.log(users);
-	// 		// return users;
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 		return [];
-	// 	}
-	// };
+	export const couples: Couple[] = [
+		{
+			id: 1,
+			name: 'Arvid',
+			image: 'src/lib/images/arvid.png'
+		},
+		{
+			id: 2,
+			name: 'Ida',
+			image: 'src/lib/images/ida.png'
+		},
+		{
+			id: 3,
+			name: 'Agust',
+			image: 'src/lib/images/agust.png'
+		},
+		{
+			id: 4,
+			name: 'Carro',
+			image: 'src/lib/images/carro.png'
+		},
+		{
+			id: 5,
+			name: 'Lina',
+			image: 'src/lib/images/lina.png'
+		},
+		{
+			id: 6,
+			name: 'Alex',
+			image: 'src/lib/images/alex.png'
+		},
+		{
+			id: 7,
+			name: 'Stina',
+			image: 'src/lib/images/stina.png'
+		},
+		{
+			id: 8,
+			name: 'Fredrik',
+			image: 'src/lib/images/fredrik.png'
+		}
+	];
 </script>
 
 <svelte:head>
@@ -36,7 +62,7 @@
 <body>
 	<div class="container" style="background-image: url({BgImage}) ">
 		<h1>Gift vid första ögonkastet</h1>
-		<p class="text">Resultat</p>
+		<p class="text">Gissningar</p>
 		{#await getDocs(q)}
 			<!-- promise is pending -->
 			<p>waiting for the promise to resolve...</p>
@@ -46,21 +72,35 @@
 				users.push({ ...user.data() });
 			})}
 
-			{#each users as user}
-				<p>{user.name}</p>
-			{/each}
+			<table>
+				<tr>
+					<th />
+					{#each couples as couple, i}
+						<th>
+							<div class="image-container" style="background-image: url({couple.image}); " />
+						</th>
+					{/each}
+				</tr>
+				{#each users as user}
+					<tr>
+						<td>{user.name}</td>
+						<td><AnswerIcon answer={user[0]} /></td>
+						<td><AnswerIcon answer={user[1]} /></td>
+						<td><AnswerIcon answer={user[2]} /></td>
+						<td><AnswerIcon answer={user[3]} /></td>
+						<td><AnswerIcon answer={user[4]} /></td>
+						<td><AnswerIcon answer={user[5]} /></td>
+						<td><AnswerIcon answer={user[6]} /></td>
+						<td><AnswerIcon answer={user[7]} /></td>
+					</tr>
+				{/each}
+			</table>
+
 			<!-- promise was fulfilled -->
 		{:catch error}
 			<!-- promise was rejected -->
 			<p>Something went wrong: {error.message}</p>
 		{/await}
-
-		<!-- {#await getResults}
-			<p class="text">laddar</p>
-		{:then users}
-			<p>"klart"</p>
-
-		{/await} -->
 	</div>
 </body>
 
@@ -80,6 +120,17 @@
 		background-size: cover;
 		background-repeat: no-repeat, repeat;
 	}
+	.image-container {
+		position: relative;
+		margin: auto;
+		background-size: cover;
+		background-color: white;
+		border-radius: 5px;
+		background-position: center;
+		background-color: aqua;
+		height: 80px;
+		width: 50px;
+	}
 	h1 {
 		font-size: 4rem;
 		text-align: center;
@@ -87,6 +138,26 @@
 		font-family: 'Abril Fatface', cursive;
 		margin-bottom: 0;
 		text-shadow: black 1px 0 10px;
+	}
+	table {
+		background-color: white;
+		/* backdrop-filter: blur(10px); */
+		border-radius: 14px;
+		padding: 22px;
+	}
+	tr {
+		margin: 0;
+		padding: 0;
+		font-size: 1rem;
+		text-align: center;
+		color: black;
+		font-family: 'Quicksand', sans-serif;
+		/* margin-top: 20px; */
+		/* text-shadow: burlywood 1px 0 1px; */
+	}
+	td {
+		margin: 0;
+		padding: 5px;
 	}
 	.text {
 		font-size: 1.5rem;
@@ -96,30 +167,7 @@
 		margin-top: 20px;
 		text-shadow: black 1px 0 10px;
 	}
-	.name-input {
-		font-size: 1rem;
-		color: black;
-		padding: 20px 20px;
-		border: 0;
-		border-radius: 10px;
-		font-family: 'Quicksand', sans-serif;
-	}
-	.start-button {
-		font-size: 2em;
-		padding: 0.6em;
-		padding-left: 1.4em;
-		padding-right: 1.4em;
-		margin: auto;
-		margin-top: 2em;
-		border: 0;
-		border-radius: 0.2em;
-		font-family: 'Abril Fatface', cursive;
-		box-shadow: black 10px 0 10px;
-		background-color: cornsilk;
-	}
-	.start-button:hover {
-		opacity: 1;
-	}
+
 	@media only screen and (max-width: 480px) {
 		.container {
 			padding-top: 20px;

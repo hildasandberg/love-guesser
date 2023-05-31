@@ -114,7 +114,7 @@
 		align-items: center;
 		height: 100vh;
 		width: 100vw;
-		padding-top: 200px;
+		padding-top: 100px;
 		background-position: bottom;
 		background-size: cover;
 		background-repeat: no-repeat, repeat;
