@@ -1,55 +1,53 @@
 <script lang="ts">
-	import { query, getDocs, collection } from 'Firebase/firestore';
 	import BgImage from '$lib/images/jonathan-borba-qRNctETJJ_c-unsplash.jpg';
 	import { db } from '../../Firebase';
-	import AnswerIcon from './AnswerIcon.svelte';
-	import type { Couple } from '../../types/couple.type';
+	import { query, getDocs, collection } from 'Firebase/firestore';
+	import { getImage } from '../../constants/peopleImages';
+	import GuessIcon from './GuessIcon.svelte';
+	import { fade } from 'svelte/transition';
 
-	const q = query(collection(db, 'users'));
 	let users: any[] = [];
+	let results: any[] = [];
 
-	export const couples: Couple[] = [
+	const getGuesses = async () => {
+		const q = query(collection(db, 'users'));
+		const docs = await getDocs(q);
 		{
-			id: 1,
-			name: 'Arvid',
-			image: 'src/lib/images/arvid.png'
-		},
-		{
-			id: 2,
-			name: 'Ida',
-			image: 'src/lib/images/ida.png'
-		},
-		{
-			id: 3,
-			name: 'Agust',
-			image: 'src/lib/images/agust.png'
-		},
-		{
-			id: 4,
-			name: 'Carro',
-			image: 'src/lib/images/carro.png'
-		},
-		{
-			id: 5,
-			name: 'Lina',
-			image: 'src/lib/images/lina.png'
-		},
-		{
-			id: 6,
-			name: 'Alex',
-			image: 'src/lib/images/alex.png'
-		},
-		{
-			id: 7,
-			name: 'Stina',
-			image: 'src/lib/images/stina.png'
-		},
-		{
-			id: 8,
-			name: 'Fredrik',
-			image: 'src/lib/images/fredrik.png'
+			docs.forEach((d) => {
+				console.log(d.data());
+				users.push({ ...d.data() });
+			});
 		}
-	];
+	};
+
+	const getResults = async () => {
+		const q = query(collection(db, 'shows', 'gvfo', 'people'));
+		const docs = await getDocs(q);
+		{
+			docs.forEach((d) => {
+				console.log(d.data());
+				results.push({ ...d.data() });
+			});
+		}
+		console.log(results);
+	};
+
+	const calculateNoOfCorrectGuesses = (userGuesses: object) => {
+		let correct = 0;
+		for (const [name, guess] of Object.entries(userGuesses)) {
+			const currentResult = results.find((res) => res.name === name).result;
+
+			if (currentResult === guess) {
+				++correct;
+			}
+		}
+		return correct;
+	};
+
+	const getData = async () => {
+		await getResults();
+		await getGuesses();
+	};
 </script>
 
 <svelte:head>
@@ -63,42 +61,39 @@
 	<div class="container" style="background-image: url({BgImage}) ">
 		<h1>Gift vid första ögonkastet</h1>
 		<p class="text">Gissningar</p>
-		{#await getDocs(q)}
-			<!-- promise is pending -->
-			<p>waiting for the promise to resolve...</p>
-		{:then documents}
-			{documents.forEach((user) => {
-				console.log(user.data());
-				users.push({ ...user.data() });
-			})}
-
-			<table>
-				<tr>
-					<th />
-					{#each couples as couple, i}
-						<th>
-							<div class="image-container" style="background-image: url({couple.image}); " />
-						</th>
-					{/each}
-				</tr>
-				{#each users as user}
+		{#await getData()}
+			<p class="text">Hämtar gissningar</p>
+		{:then}
+			{#if users}
+				<table in:fade>
 					<tr>
-						<td>{user.name}</td>
-						<td><AnswerIcon answer={user[0]} /></td>
-						<td><AnswerIcon answer={user[1]} /></td>
-						<td><AnswerIcon answer={user[2]} /></td>
-						<td><AnswerIcon answer={user[3]} /></td>
-						<td><AnswerIcon answer={user[4]} /></td>
-						<td><AnswerIcon answer={user[5]} /></td>
-						<td><AnswerIcon answer={user[6]} /></td>
-						<td><AnswerIcon answer={user[7]} /></td>
+						<th />
+						{#each results as p}
+							<th>
+								<div class="image-container" style="background-image: url({getImage(p.id)}); " />
+							</th>
+						{/each}
 					</tr>
-				{/each}
-			</table>
+					{#each users as user}
+						<tr>
+							<td>{user.name}</td>
 
-			<!-- promise was fulfilled -->
+							{#each results as r}
+								<td>
+									<GuessIcon
+										guess={user.gvfo[r.name]}
+										result={results.find((res) => res.name === r.name).result}
+									/>
+								</td>
+							{/each}
+							<td>
+								<p>{calculateNoOfCorrectGuesses(user.gvfo)}</p>
+							</td>
+						</tr>
+					{/each}
+				</table>
+			{/if}
 		{:catch error}
-			<!-- promise was rejected -->
 			<p>Something went wrong: {error.message}</p>
 		{/await}
 	</div>
@@ -127,7 +122,6 @@
 		background-color: white;
 		border-radius: 5px;
 		background-position: center;
-		background-color: aqua;
 		height: 80px;
 		width: 50px;
 	}
@@ -141,7 +135,6 @@
 	}
 	table {
 		background-color: white;
-		/* backdrop-filter: blur(10px); */
 		border-radius: 14px;
 		padding: 22px;
 	}
@@ -152,8 +145,6 @@
 		text-align: center;
 		color: black;
 		font-family: 'Quicksand', sans-serif;
-		/* margin-top: 20px; */
-		/* text-shadow: burlywood 1px 0 1px; */
 	}
 	td {
 		margin: 0;

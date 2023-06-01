@@ -2,6 +2,7 @@
 	import { Motion, useSpring, useMotionTemplate } from 'svelte-motion';
 	import type { Couple } from '../types/couple.type';
 	import { fade, fly } from 'svelte/transition';
+	import { getImage } from '../constants/peopleImages';
 	export let visible: boolean;
 	export let couple: Couple;
 	export let handleRightSwipe: () => void;
@@ -92,7 +93,9 @@
 			>
 				<div
 					class="image-container"
-					style="width:{width}px; height: {height}px; background-image: url({couple.image}); background-position: center;"
+					style="width:{width}px; height: {height}px; background-image: url({getImage(
+						couple.id
+					)}); background-position: center;"
 				/>
 				<div class="name-container">
 					{couple.name}

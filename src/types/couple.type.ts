@@ -1,5 +1,4 @@
-	export type Couple = {
+	export type People = {
 		id: number;
 		name: string;
-		image: string;
 	};

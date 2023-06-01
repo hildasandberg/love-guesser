@@ -1,68 +1,41 @@
 <script lang="ts">
 	import { Motion } from 'svelte-motion';
 	import Hello from './Hello.svelte';
-	import type { Couple } from '../types/couple.type';
-	import { addDoc, collection } from 'Firebase/firestore';
-
-	// import BgImage from '$lib/images/heart_bg.jpg';
+	import { addDoc, collection, query, getDocs } from 'Firebase/firestore';
 
 	import BgImage from '$lib/images/jonathan-borba-qRNctETJJ_c-unsplash.jpg';
-	import { db, firebaseConfig } from '../Firebase';
-	export const couples: Couple[] = [
+	import { db, poepleRef } from '../Firebase';
+	import { onMount } from 'svelte';
+
+	let people: any[] = [];
+
+	const getPeople = async () => {
+		const q = query(poepleRef);
+		const docs = await getDocs(q);
 		{
-			id: 1,
-			name: 'Arvid',
-			image: 'src/lib/images/arvid.png'
-		},
-		{
-			id: 2,
-			name: 'Ida',
-			image: 'src/lib/images/ida.png'
-		},
-		{
-			id: 3,
-			name: 'Agust',
-			image: 'src/lib/images/agust.png'
-		},
-		{
-			id: 4,
-			name: 'Carro',
-			image: 'src/lib/images/carro.png'
-		},
-		{
-			id: 5,
-			name: 'Lina',
-			image: 'src/lib/images/lina.png'
-		},
-		{
-			id: 6,
-			name: 'Alex',
-			image: 'src/lib/images/alex.png'
-		},
-		{
-			id: 7,
-			name: 'Stina',
-			image: 'src/lib/images/stina.png'
-		},
-		{
-			id: 8,
-			name: 'Fredrik',
-			image: 'src/lib/images/fredrik.png'
+			docs.forEach((d) => {
+				console.log(d.data());
+				people.push({ ...d.data() });
+			});
 		}
-	];
+	};
+
+	onMount(async () => {
+		await getPeople();
+	});
 
 	let start: boolean = false;
 	let name: string;
 	export let userId: string;
 
-	const startSwipeShow = () => {
-		saveName();
+	const startSwipeShow = async () => {
+		await saveName();
 		setTimeout(() => {
 			start = true;
 		}, 1000);
 	};
 
-	async function saveName() {
+	const saveName = async () => {
 		try {
 			const docRef = await addDoc(collection(db, 'users'), { name: name });
 
@@ -72,7 +45,7 @@
 		} catch (error) {
 			console.log(error);
 		}
-	}
+	};
 </script>
 
 <svelte:head>
@@ -98,7 +71,7 @@
 		{/if}
 
 		{#if start}
-			<Hello {couples} {userId} />
+			<Hello couples={people} {userId} />
 		{/if}
 	</div>
 </body>

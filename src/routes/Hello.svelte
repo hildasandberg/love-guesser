@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import type { Couple } from '../types/couple.type';
+	import type { People } from '../types/couple.type';
 	import CoupleCard from './CoupleCard.svelte';
 	import { Motion } from 'svelte-motion';
 	import { setDoc, collection } from 'Firebase/firestore';
@@ -10,7 +10,7 @@
 	export const width: number = 300;
 	export const height: number = 1.4 * width;
 
-	export let couples: Couple[];
+	export let couples: People[];
 	export let userId: string;
 	let currentCoupleIndex: number = 0;
 
@@ -32,9 +32,19 @@
 	};
 
 	const saveAnswer = (guess: boolean) => {
+		const person = couples[currentCoupleIndex];
 		try {
 			const docRef = doc(collection(db, 'users'), userId);
-			setDoc(docRef, { [currentCoupleIndex]: guess }, { merge: true });
+			setDoc(
+				docRef,
+				{
+					gvfo: {
+						[person.name]: guess
+					}
+				},
+				{ merge: true }
+			);
+			// setDoc(docRef, { [currentCoupleIndex + 1]: guess }, { merge: true });
 		} catch (error) {
 			console.log(error);
 		}
@@ -70,8 +80,9 @@
 			<div class="end-text-container">
 				<p class="end-text" style="height: {height}px; width: {width}px;">
 					Tack för att du swipeade
+					<br />
+					<a href="/results">Se gissningar</a>
 				</p>
-				<a href="/results">Resultatsidan</a>
 			</div>
 		{:else}
 			{#each couples as couple, i}
@@ -147,6 +158,14 @@
 		font-size: 5rem;
 	}
 
+	a {
+		font-size: 1.5rem;
+		text-align: center;
+		color: white;
+		font-family: 'Quicksand', sans-serif;
+		margin-top: 20px;
+		text-shadow: black 1px 0 10px;
+	}
 	/* Use this to make sure screen readers read something sensible when encountering the mi. If you are using the icons decoratively, you can omit the <span> */
 	.u-sr-only {
 		position: absolute;
