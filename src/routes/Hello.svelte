@@ -3,9 +3,9 @@
 	import type { People } from '../types/couple.type';
 	import CoupleCard from './CoupleCard.svelte';
 	import { Motion } from 'svelte-motion';
-	import { setDoc, collection } from 'Firebase/firestore';
-	import { doc } from 'Firebase/firestore';
-	import { db } from '../Firebase';
+	import { setDoc, collection } from 'firebase/firestore';
+	import { doc } from 'firebase/firestore';
+	import { db } from '../firebase';
 
 	export const width: number = 300;
 	export const height: number = 1.4 * width;

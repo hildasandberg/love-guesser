@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { Motion } from 'svelte-motion';
 	import Hello from './Hello.svelte';
-	import { addDoc, collection, query, getDocs } from 'Firebase/firestore';
+	import { addDoc, collection, query, getDocs } from 'firebase/firestore';
 
 	import BgImage from '$lib/images/jonathan-borba-qRNctETJJ_c-unsplash.jpg';
-	import { db, poepleRef } from '../Firebase';
+	import { db, poepleRef } from '../firebase';
 	import { onMount } from 'svelte';
 
 	let people: any[] = [];

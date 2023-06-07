@@ -1,6 +1,6 @@
-import { initializeApp } from 'Firebase/app';
-	import { getFirestore } from 'Firebase/firestore';
-	import { collection, setDoc, doc } from 'Firebase/firestore';
+import { initializeApp } from 'firebase/app';
+	import { getFirestore } from 'firebase/firestore';
+	import { collection, setDoc, doc } from 'firebase/firestore';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 export const firebaseConfig = {
@@ -17,7 +17,6 @@ export const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 export const db = getFirestore(app);
-
 
 export const poepleRef = collection(db, 'shows', 'gvfo', 'people');
 

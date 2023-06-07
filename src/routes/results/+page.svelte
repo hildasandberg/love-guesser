@@ -1,7 +1,7 @@
 <script lang="ts">
 	import BgImage from '$lib/images/jonathan-borba-qRNctETJJ_c-unsplash.jpg';
-	import { db } from '../../Firebase';
-	import { query, getDocs, collection } from 'Firebase/firestore';
+	import { db } from '../../firebase';
+	import { query, getDocs, collection } from 'firebase/firestore';
 	import { getImage } from '../../constants/peopleImages';
 	import GuessIcon from './GuessIcon.svelte';
 	import { fade } from 'svelte/transition';
