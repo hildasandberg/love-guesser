@@ -56,10 +56,12 @@
 </svelte:head>
 
 <body>
-	<div class="container" style="background-image: url({BgImage}) ">
+	<div class="container" style="background-image: url({BgImage}">
 		<h1>Gift vid första ögonkastet</h1>
 		<p class="text">Vem vill fortsätta vara gift?</p>
-
+		{#if start}
+			<Hello couples={people} {userId} />
+		{/if}
 		{#if !start}
 			<p class="text">Skriv ditt namn för att börja</p>
 			<input class="name-input" placeholder="Ditt namn" bind:value={name} />
@@ -69,19 +71,22 @@
 				>
 			</Motion>
 		{/if}
-
-		{#if start}
-			<Hello couples={people} {userId} />
-		{/if}
 	</div>
 </body>
 
 <style>
-	body {
+	:global(html) {
 		padding: 0;
 		margin: 0;
+		box-sizing: border-box;
+	}
+	:global(body) {
+		padding: 0;
+		margin: 0;
+		box-sizing: border-box;
 	}
 	.container {
+		background-color: red;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -91,6 +96,7 @@
 		background-position: bottom;
 		background-size: cover;
 		background-repeat: no-repeat, repeat;
+		overflow: hidden;
 	}
 	h1 {
 		font-size: 4rem;
@@ -134,8 +140,7 @@
 	}
 	@media only screen and (max-width: 480px) {
 		.container {
-			padding-top: 20px;
-			/* padding: 20px; */
+			padding: 20px;
 		}
 	}
 </style>

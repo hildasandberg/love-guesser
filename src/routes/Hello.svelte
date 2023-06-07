@@ -44,7 +44,6 @@
 				},
 				{ merge: true }
 			);
-			// setDoc(docRef, { [currentCoupleIndex + 1]: guess }, { merge: true });
 		} catch (error) {
 			console.log(error);
 		}
@@ -61,66 +60,69 @@
 	<link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css" />
 </svelte:head>
 
-<div class="hello">
-	{#if !end}
-		<Motion let:motion whileHover={{ scale: 1.2 }} whileTap={{ rotate: 45 }}>
-			<div
-				transition:fade
-				use:motion
-				class="false-icon-container mobile-hide"
-				on:click={handleLeftSwipe}
-			>
-				<i class="mi mi-close"><span class="u-sr-only">Cross-icon</span></i>
-			</div>
-		</Motion>
-	{/if}
+<div class="swipe-container">
+	<div class="container">
+		{#if !end}
+			<Motion let:motion whileHover={{ scale: 1.2 }} whileTap={{ rotate: 45 }}>
+				<div
+					transition:fade
+					use:motion
+					class="false-icon-container desktop-show"
+					on:click={handleLeftSwipe}
+				>
+					<i class="mi mi-close"><span class="u-sr-only">Cross-icon</span></i>
+				</div>
+			</Motion>
+		{/if}
 
-	<div style="width: {width}px">
-		{#if end}
-			<div class="end-text-container">
-				<p class="end-text" style="height: {height}px; width: {width}px;">
-					Tack för att du swipeade
-					<br />
-					<a href="/results">Se gissningar</a>
-				</p>
-			</div>
-		{:else}
-			{#each couples as couple, i}
-				<CoupleCard
-					{width}
-					{height}
-					{couple}
-					{handleRightSwipe}
-					{handleLeftSwipe}
-					visible={currentCoupleIndex === i}
-				/>
-			{/each}
+		<div style="width: {width}px">
+			{#if end}
+				<div class="end-text-container">
+					<p class="end-text" style="height: {height}px; width: {width}px;">
+						Tack för att du swipeade
+						<br />
+						<a href="/results">Se gissningar</a>
+					</p>
+				</div>
+			{:else}
+				{#each couples as couple, i}
+					<CoupleCard
+						{width}
+						{height}
+						{couple}
+						{handleRightSwipe}
+						{handleLeftSwipe}
+						visible={currentCoupleIndex === i}
+					/>
+				{/each}
+			{/if}
+		</div>
+
+		{#if !end}
+			<Motion let:motion whileHover={{ scale: 1.2 }} whileTap={{ rotate: 45 }}>
+				<div
+					transition:fade
+					use:motion
+					class="true-icon-container desktop-show"
+					on:click={handleRightSwipe}
+				>
+					<i class="mi mi-heart"><span class="u-sr-only">Heart-icon</span></i>
+				</div>
+			</Motion>
 		{/if}
 	</div>
-
-	{#if !end}
-		<Motion let:motion whileHover={{ scale: 1.2 }} whileTap={{ rotate: 45 }}>
-			<div
-				transition:fade
-				use:motion
-				class="true-icon-container mobile-hide"
-				on:click={handleRightSwipe}
-			>
-				<i class="mi mi-heart"><span class="u-sr-only">Heart-icon</span></i>
-			</div>
-		</Motion>
-	{/if}
 </div>
 
 <style>
-	.hello {
-		position: relative;
-		width: 100vw;
+	.swipe-container {
+		background-color: aqua;
+		display: relative;
+		font-size: 2em;
+	}
+	.container {
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
-		/* justify-content: space-around; */
-		/* justify-content: space-between; */
 		font-size: 2em;
 		min-height: 400px;
 	}
@@ -138,20 +140,10 @@
 		text-shadow: black 1px 0 10px;
 	}
 	.false-icon-container {
-		display: flex;
-		color: white;
-		justify-content: center;
-		align-items: center;
-		margin: 4rem;
-		cursor: pointer;
+		display: none;
 	}
 	.true-icon-container {
-		display: flex;
-		color: white;
-		justify-content: center;
-		align-items: center;
-		margin: 4rem;
-		cursor: pointer;
+		display: none;
 	}
 
 	.mi {
@@ -175,14 +167,17 @@
 		height: 1px;
 		overflow: hidden;
 	}
-	@media only screen and (max-width: 900px) {
-		.mobile-hide {
-			visibility: hidden;
+	@media only screen and (min-width: 900px) {
+		.desktop-show {
+			display: flex;
+			color: white;
+			justify-content: center;
+			align-items: center;
+			margin: 4rem;
+			cursor: pointer;
 		}
-		/* .hello {
-			position: relative;
-			flex-direction: column;
-			min-height: 400px;
+		/* .mobile-hide {
+			display: none;
 		} */
 	}
 </style>

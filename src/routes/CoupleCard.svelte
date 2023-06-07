@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Motion, useSpring, useMotionTemplate } from 'svelte-motion';
-	import type { Couple } from '../types/couple.type';
 	import { fade, fly } from 'svelte/transition';
 	import { getImage } from '../constants/peopleImages';
 	export let visible: boolean;
