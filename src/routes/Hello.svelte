@@ -115,11 +115,6 @@
 
 <style>
 	.swipe-container {
-		background-color: aqua;
-		display: relative;
-		font-size: 2em;
-	}
-	.container {
 		display: flex;
 		flex-direction: row;
 		justify-content: center;

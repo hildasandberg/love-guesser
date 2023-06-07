@@ -5,6 +5,7 @@
 	import { getImage } from '../../constants/peopleImages';
 	import GuessIcon from './GuessIcon.svelte';
 	import { fade } from 'svelte/transition';
+	import PageContainer from '../PageContainer.svelte';
 
 	let users: any[] = [];
 	let results: any[] = [];
@@ -57,24 +58,23 @@
 	/>
 </svelte:head>
 
-<body>
-	<div class="container" style="background-image: url({BgImage}) ">
-		<h1>Gift vid första ögonkastet</h1>
-		<p class="text">Gissningar</p>
-		{#await getData()}
-			<p class="text">Hämtar gissningar</p>
-		{:then}
-			{#if users}
-				<table in:fade>
-					<tr>
-						<th />
-						{#each results as p}
-							<th>
-								<div class="image-container" style="background-image: url({getImage(p.id)}); " />
-							</th>
-						{/each}
-					</tr>
-					{#each users as user}
+<PageContainer>
+	<p class="text">Gissningar</p>
+	{#await getData()}
+		<p class="text">Hämtar gissningar</p>
+	{:then}
+		{#if users}
+			<table in:fade>
+				<tr>
+					<th />
+					{#each results as p}
+						<th>
+							<div class="image-container" style="background-image: url({getImage(p.id)}); " />
+						</th>
+					{/each}
+				</tr>
+				{#each users as user}
+					{#if user.gvfo}
 						<tr>
 							<td>{user.name}</td>
 
@@ -90,31 +90,16 @@
 								<p>{calculateNoOfCorrectGuesses(user.gvfo)}</p>
 							</td>
 						</tr>
-					{/each}
-				</table>
-			{/if}
-		{:catch error}
-			<p>Something went wrong: {error.message}</p>
-		{/await}
-	</div>
-</body>
+					{/if}
+				{/each}
+			</table>
+		{/if}
+	{:catch error}
+		<p>Something went wrong: {error.message}</p>
+	{/await}
+</PageContainer>
 
 <style>
-	body {
-		padding: 0;
-		margin: 0;
-	}
-	.container {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		height: 100vh;
-		width: 100vw;
-		padding-top: 200px;
-		background-position: bottom;
-		background-size: cover;
-		background-repeat: no-repeat, repeat;
-	}
 	.image-container {
 		position: relative;
 		margin: auto;
@@ -124,14 +109,6 @@
 		background-position: center;
 		height: 80px;
 		width: 50px;
-	}
-	h1 {
-		font-size: 4rem;
-		text-align: center;
-		color: white;
-		font-family: 'Abril Fatface', cursive;
-		margin-bottom: 0;
-		text-shadow: black 1px 0 10px;
 	}
 	table {
 		background-color: white;
@@ -159,10 +136,37 @@
 		text-shadow: black 1px 0 10px;
 	}
 
-	@media only screen and (max-width: 480px) {
-		.container {
-			padding-top: 20px;
-			/* padding: 20px; */
+	@media only screen and (max-width: 600px) {
+		.image-container {
+			border-radius: 5px;
+			background-position: center;
+			height: 50px;
+			width: 30px;
+		}
+		table {
+			background-color: white;
+			border-radius: 14px;
+			padding: 22px;
+		}
+		tr {
+			margin: 0;
+			padding: 0;
+			font-size: 0.8rem;
+			text-align: center;
+			color: black;
+			font-family: 'Quicksand', sans-serif;
+		}
+		td {
+			margin: 0;
+			padding: 2px;
+		}
+		.text {
+			font-size: 1.5rem;
+			text-align: center;
+			color: white;
+			font-family: 'Quicksand', sans-serif;
+			margin-top: 20px;
+			text-shadow: black 1px 0 10px;
 		}
 	}
 </style>
