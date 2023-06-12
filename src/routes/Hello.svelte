@@ -62,7 +62,7 @@
 
 <div class="swipe-container">
 	<div class="container">
-		{#if !end}
+		<!-- {#if !end}
 			<Motion let:motion whileHover={{ scale: 1.2 }} whileTap={{ rotate: 45 }}>
 				<div
 					transition:fade
@@ -73,7 +73,7 @@
 					<i class="mi mi-close"><span class="u-sr-only">Cross-icon</span></i>
 				</div>
 			</Motion>
-		{/if}
+		{/if} -->
 
 		<div style="width: {width}px">
 			{#if end}
@@ -98,7 +98,7 @@
 			{/if}
 		</div>
 
-		{#if !end}
+		<!-- {#if !end}
 			<Motion let:motion whileHover={{ scale: 1.2 }} whileTap={{ rotate: 45 }}>
 				<div
 					transition:fade
@@ -109,7 +109,7 @@
 					<i class="mi mi-heart"><span class="u-sr-only">Heart-icon</span></i>
 				</div>
 			</Motion>
-		{/if}
+		{/if} -->
 	</div>
 </div>
 

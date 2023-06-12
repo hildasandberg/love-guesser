@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { Motion, useSpring, useMotionTemplate } from 'svelte-motion';
+	import type { People } from '../types/couple.type';
 	import { fade, fly } from 'svelte/transition';
 	import { getImage } from '../constants/peopleImages';
 	export let visible: boolean;
-	export let couple: Couple;
+	export let couple: People;
 	export let handleRightSwipe: () => void;
 	export let handleLeftSwipe: () => void;
 
@@ -65,6 +66,10 @@
 			goBackToStartCoordinates();
 		}
 	};
+
+	function getImageUrl(name: string) {
+		return new URL(`../lib/images/${name}.png`, import.meta.url).href;
+	}
 </script>
 
 {#if visible}
@@ -90,6 +95,18 @@
 				class="unselectable card-container"
 				style="transform: translate({$x}px,{$y}px); width: {width}px"
 			>
+				<!-- <div
+					class="image-container"
+					style="width:{width}px; height: {height}px; background-image: url({getImageUrl(
+						couple.name
+					)}); background-position: center;"
+				/> -->
+				<!-- <div
+					class="image-container"
+					style="width:{width}px; height: {height}px; background-image: url({getImage(
+						couple.id
+					)}); background-position: center;"
+				/> -->
 				<div
 					class="image-container"
 					style="width:{width}px; height: {height}px; background-image: url({getImage(
