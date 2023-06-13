@@ -79,10 +79,11 @@
 		color: white;
 		font-family: 'Quicksand', sans-serif;
 		margin-top: 20px;
-		text-shadow: black 1px 0 10px;
+		text-shadow: gainsboro 1px 0 10px;
 	}
 	.name-input {
 		font-size: 1rem;
+		width: 200px;
 		color: black;
 		padding: 20px 20px;
 		border: 0;
@@ -90,17 +91,20 @@
 		font-family: 'Quicksand', sans-serif;
 	}
 	.start-button {
-		font-size: 2em;
-		padding: 0.6em;
-		padding-left: 1.4em;
-		padding-right: 1.4em;
+		font-size: 1.5em;
+		width: 250px;
+		padding: 15px 40px;
+		/* padding-left: 1.4em;
+		padding-right: 1.4em; */
 		margin: auto;
 		margin-top: 2em;
 		border: 0;
-		border-radius: 0.2em;
+		border-radius: 10px;
 		font-family: 'Abril Fatface', cursive;
-		box-shadow: black 10px 0 10px;
-		background-color: cornsilk;
+		box-shadow: gainsboro 1px 0 10px;
+		box-shadow: 10px 0 10px;
+		background-color: red;
+		/* background-color: cornsilk; */
 	}
 	.start-button:hover {
 		opacity: 1;

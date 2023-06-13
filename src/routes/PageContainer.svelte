@@ -1,5 +1,6 @@
 <script lang="ts">
-	import BgImage from '$lib/images/jonathan-borba-qRNctETJJ_c-unsplash.jpg';
+	import BgImage from '$lib/images/bruna-branco-t8hTmte4O_g-unsplash.jpg';
+	// import BgImage from '$lib/images/jonathan-borba-qRNctETJJ_c-unsplash.jpg';
 </script>
 
 <body>
