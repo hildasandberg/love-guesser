@@ -10,6 +10,7 @@
 	export let couples: People[];
 	export let userId: string;
 	export let show: string;
+	export let out = 200;
 
 	export const width: number = 350;
 	export const height: number = show === 'gvfo-sen' ? 1 * width : 1.4 * width;
@@ -25,10 +26,12 @@
 	};
 
 	const handleRightSwipe = async () => {
+		out = width;
 		saveAnswer(true);
 	};
 
 	const handleLeftSwipe = () => {
+		out = -width;
 		saveAnswer(false);
 	};
 
@@ -63,7 +66,7 @@
 
 <div class="swipe-container">
 	<div class="container">
-		<!-- {#if !end}
+		{#if !end}
 			<Motion let:motion whileHover={{ scale: 1.2 }} whileTap={{ rotate: 45 }}>
 				<div
 					transition:fade
@@ -74,7 +77,7 @@
 					<i class="mi mi-close"><span class="u-sr-only">Cross-icon</span></i>
 				</div>
 			</Motion>
-		{/if} -->
+		{/if}
 
 		<div style="width: {width}px">
 			{#if end}
@@ -93,13 +96,14 @@
 						{couple}
 						{handleRightSwipe}
 						{handleLeftSwipe}
+						{out}
 						visible={currentCoupleIndex === i}
 					/>
 				{/each}
 			{/if}
 		</div>
 
-		<!-- {#if !end}
+		{#if !end}
 			<Motion let:motion whileHover={{ scale: 1.2 }} whileTap={{ rotate: 45 }}>
 				<div
 					transition:fade
@@ -110,7 +114,7 @@
 					<i class="mi mi-heart"><span class="u-sr-only">Heart-icon</span></i>
 				</div>
 			</Motion>
-		{/if} -->
+		{/if}
 	</div>
 </div>
 
@@ -121,6 +125,11 @@
 		justify-content: center;
 		font-size: 2em;
 		min-height: 400px;
+	}
+	.container {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
 	}
 	.end-text-container {
 		position: absolute;
@@ -136,10 +145,23 @@
 		text-shadow: black 1px 0 10px;
 	}
 	.false-icon-container {
-		display: none;
+		color: white;
+		justify-content: center;
+		align-items: center;
+		margin: 4rem;
+		cursor: pointer;
+		display: flex;
+		/* display: none; */
 	}
 	.true-icon-container {
-		display: none;
+		display: flex;
+		color: white;
+		justify-content: center;
+		align-items: center;
+		margin: 4rem;
+		cursor: pointer;
+		display: flex;
+		/* display: none; */
 	}
 
 	.mi {

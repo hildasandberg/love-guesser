@@ -10,8 +10,11 @@
 
 	export let height: number;
 	export let width: number;
+	export let out: number;
 
 	let swiped: boolean = false;
+	let goingRight: boolean = false;
+	let goingLeft: boolean = false;
 	let springProps = { damping: 115, stiffness: 600, mass: 8 };
 
 	// store the pan information into a motion value
@@ -29,7 +32,7 @@
 		// xpanoffset = x.get();
 	};
 
-	let out = 200;
+	// let out = 200;
 
 	// called onPan:
 	const handlePanMove = async (e, info) => {
@@ -43,16 +46,30 @@
 			const xx = Math.sign(xoffset) * Math.pow(Math.abs(xoffset), 1.1);
 			x.set(xx + xpanoffset);
 			console.log(xoffset);
-			if (xoffset > width * 0.5) {
+			if (xoffset < width * 0.2 && xoffset > -(width * 0.2)) {
+				goingRight = false;
+				goingLeft = false;
+			}
+			if (xoffset > width * 0.2) {
 				out = width;
-				swiped = true;
-				handleRightSwipe();
+				goingRight = true;
+				goingLeft = false;
 			}
-			if (xoffset < -(width * 0.5)) {
+			if (xoffset < -(width * 0.2)) {
 				out = -width;
-				swiped = true;
-				handleLeftSwipe();
+				goingLeft = true;
+				goingRight = false;
 			}
+			// if (xoffset > width * 0.5) {
+			// 	out = width;
+			// 	swiped = true;
+			// 	handleRightSwipe();
+			// }
+			// if (xoffset < -(width * 0.5)) {
+			// 	out = -width;
+			// 	swiped = true;
+			// 	handleLeftSwipe();
+			// }
 		}
 	};
 
@@ -62,6 +79,13 @@
 	};
 
 	const handlePanEnd = () => {
+		if (goingLeft) {
+			swiped = true;
+			handleLeftSwipe();
+		} else if (goingRight) {
+			swiped = true;
+			handleRightSwipe();
+		} else goBackToStartCoordinates();
 		if (!swiped) {
 			goBackToStartCoordinates();
 		}
@@ -71,6 +95,10 @@
 		return new URL(`../lib/images/${name}.png`, import.meta.url).href;
 	}
 </script>
+
+<svelte:head>
+	<link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css" />
+</svelte:head>
 
 {#if visible}
 	<div
@@ -112,7 +140,22 @@
 					style="width:{width}px; height: {height}px; background-image: url({getImage(
 						couple.id
 					)}); background-position: center;"
-				/>
+				>
+					{#if goingLeft}
+						<Motion let:motion whileHover={{ scale: 1.2 }} whileTap={{ rotate: 45 }}>
+							<div transition:fade use:motion class="false-icon-container">
+								<i class="mi mi-close"><span class="u-sr-only">Cross-icon</span></i>
+							</div>
+						</Motion>
+					{/if}
+					{#if goingRight}
+						<Motion let:motion whileHover={{ scale: 1.2 }} whileTap={{ rotate: 45 }}>
+							<div transition:fade use:motion class="true-icon-container">
+								<i class="mi mi-heart"><span class="u-sr-only">Heart-icon</span></i>
+							</div>
+						</Motion>
+					{/if}
+				</div>
 				<div class="name-container">
 					{couple.name}
 				</div>
@@ -141,6 +184,9 @@
 	}
 	.image-container {
 		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		margin: auto;
 		background-size: cover;
 		background-color: white;
@@ -152,5 +198,36 @@
 		text-align: center;
 		font-family: 'Abril Fatface', cursive;
 		border-radius: 0 0 14px 14px;
+	}
+
+	.false-icon-container {
+		color: white;
+		justify-content: center;
+		align-items: center;
+		margin: 4rem;
+		cursor: pointer;
+		display: flex;
+		/* display: none; */
+	}
+	.true-icon-container {
+		display: flex;
+		color: white;
+		justify-content: center;
+		align-items: center;
+		margin: 4rem;
+		cursor: pointer;
+		display: flex;
+		/* display: none; */
+	}
+	.mi {
+		font-size: 10rem;
+	}
+	.u-sr-only {
+		position: absolute;
+		left: -10000px;
+		top: auto;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
 	}
 </style>
