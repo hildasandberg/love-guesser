@@ -12,6 +12,7 @@
 
 	export let couples: People[];
 	export let userId: string;
+	export let show: string;
 	let currentCoupleIndex: number = 0;
 
 	const nextCouple = () => {
@@ -38,7 +39,7 @@
 			setDoc(
 				docRef,
 				{
-					gvfo: {
+					[show]: {
 						[person.name]: guess
 					}
 				},
@@ -81,7 +82,7 @@
 					<p class="end-text" style="height: {height}px; width: {width}px;">
 						Tack för att du swipeade
 						<br />
-						<a href="/results">Se gissningar</a>
+						<a href={`/results/${show}`}>Se gissningar</a>
 					</p>
 				</div>
 			{:else}

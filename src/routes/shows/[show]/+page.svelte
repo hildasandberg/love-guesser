@@ -1,28 +1,12 @@
 <script lang="ts">
 	import { Motion } from 'svelte-motion';
-	import { addDoc, collection, query, getDocs } from 'firebase/firestore';
-	import { db, poepleRef } from '../firebase';
-	import { onMount } from 'svelte';
-	import PageContainer from './PageContainer.svelte';
-	import Swiper from './Swiper.svelte';
+	import { addDoc, collection } from 'firebase/firestore';
+	import { db } from '../../../firebase';
+	import PageContainer from '../../PageContainer.svelte';
+	import Swiper from '../../Swiper.svelte';
 
-	let people: any[] = [];
-
-	const getPeople = async () => {
-		const q = query(poepleRef);
-		const docs = await getDocs(q);
-		{
-			docs.forEach((d) => {
-				console.log(d.data());
-				people.push({ ...d.data() });
-			});
-		}
-	};
-
-	onMount(async () => {
-		people = [];
-		await getPeople();
-	});
+	/** @type {import('./$types').PageData} */
+	export let data;
 
 	let start: boolean = false;
 	let name: string;
@@ -38,9 +22,6 @@
 	const saveName = async () => {
 		try {
 			const docRef = await addDoc(collection(db, 'users'), { name: name });
-
-			console.log(docRef);
-			console.log(docRef.id);
 			userId = docRef.id;
 		} catch (error) {
 			console.log(error);
@@ -58,7 +39,7 @@
 	<PageContainer>
 		<p class="text">Vem vill fortsätta vara gift?</p>
 		{#if start}
-			<Swiper couples={people} {userId} />
+			<Swiper couples={data.people} {userId} show={data.show} />
 		{/if}
 		{#if !start}
 			<p class="text">Skriv ditt namn för att börja</p>

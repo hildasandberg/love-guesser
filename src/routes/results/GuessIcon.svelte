@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let guess: boolean;
-	export let result: boolean;
+	export let result: boolean | undefined;
 
 	console.log('guess', guess, 'result', result);
 </script>
