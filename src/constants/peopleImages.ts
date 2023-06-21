@@ -38,10 +38,28 @@ export const gvfoPeople = [
         id: 8,
         image: 'https://metromode.se/mmImages/1/2023/03/fredrik-32-gift-vid-forsta-ogonkastet-2023-deltagare__mmcompress-large__.jpg',
         url: 'https://metromode.se/mmImages/1/2023/03/fredrik-32-gift-vid-forsta-ogonkastet-2023-deltagare__mmcompress-large__.jpg'
+    },
+    {
+        id: 9,
+        image: 'https://metromode.se/mmImages/1/2023/03/fredrik-32-gift-vid-forsta-ogonkastet-2023-deltagare__mmcompress-large__.jpg',
+        // url: 'https://images.aftonbladet-cdn.se/v2/images/00c796fd-d667-4b8d-aff2-695e1bbacc6a?fit=crop&format=auto&h=814&q=50&w=1300&s=5112f678cca20c4c8f4943e327db0dfdd65f529a'
+        // url: 'https://i2.wp.com/veckorevyn.com/wp-content/uploads/2023/04/arvidida.jpg?resize=800%2C800&strip=info&ssl=1'
+        url: 'https://image.familjeliv.se/440841.webp?imageId=440841&x=0.00&y=0.00&cropw=100.00&croph=100.00&width=2116&height=1418&format=webp'
+    },
+    {
+        id: 10,
+        image: 'https://metromode.se/mmImages/1/2023/03/fredrik-32-gift-vid-forsta-ogonkastet-2023-deltagare__mmcompress-large__.jpg',
+        url: 'https://image.familjeliv.se/440843.webp?imageId=440843&x=0.00&y=0.00&cropw=100.00&croph=100.00&width=2116&height=1418&format=webp'
+    },
+    {
+        id: 11,
+        image: 'https://metromode.se/mmImages/1/2023/03/fredrik-32-gift-vid-forsta-ogonkastet-2023-deltagare__mmcompress-large__.jpg',
+        url: 'https://image.familjeliv.se/440839.webp?imageId=440839&x=0.00&y=0.00&cropw=100.00&croph=100.00&width=2116&height=1418&format=webp'
     }
 ];
 
 export const getImage = (id: number) => {
+    console.log("id", id)
     const found = gvfoPeople.find((image) => image.id === id);
     return found?.url;
 };

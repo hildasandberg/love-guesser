@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getDocs, getFirestore, query } from 'firebase/firestore';
+import { addDoc, getDocs, getFirestore, query } from 'firebase/firestore';
 import { collection, setDoc, doc } from 'firebase/firestore';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -29,6 +29,15 @@ const peopleQuery = (show: string) => {
 
 const usersRef = collection(db, 'users');
 const usersQuery = query(usersRef);
+
+export const saveUser = async (name: string) => {
+	try {
+		const docRef = await addDoc(collection(db, 'users'), { name: name });
+		return docRef.id;
+	} catch (error) {
+		console.log(error);
+	}
+};
 
 export const getUsers = async () => {
 	const docs = await getDocs(usersQuery);

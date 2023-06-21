@@ -7,12 +7,12 @@
 	import { doc } from 'firebase/firestore';
 	import { db } from '../firebase';
 
-	export const width: number = 300;
-	export const height: number = 1.4 * width;
-
 	export let couples: People[];
 	export let userId: string;
 	export let show: string;
+
+	export const width: number = 350;
+	export const height: number = show === 'gvfo-sen' ? 1 * width : 1.4 * width;
 	let currentCoupleIndex: number = 0;
 
 	const nextCouple = () => {

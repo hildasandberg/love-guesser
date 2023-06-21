@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { Motion } from 'svelte-motion';
-	import { addDoc, collection } from 'firebase/firestore';
-	import { db } from '../../../firebase';
+	import { saveUser } from '../../../firebase';
 	import PageContainer from '../../PageContainer.svelte';
 	import Swiper from '../../Swiper.svelte';
+	import { PageTitle } from '../../../constants/pageTexts';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -20,11 +20,9 @@
 	};
 
 	const saveName = async () => {
-		try {
-			const docRef = await addDoc(collection(db, 'users'), { name: name });
-			userId = docRef.id;
-		} catch (error) {
-			console.log(error);
+		const user = await saveUser(name);
+		if (user) {
+			userId = user;
 		}
 	};
 </script>
@@ -37,7 +35,7 @@
 </svelte:head>
 <div class="gvfo">
 	<PageContainer>
-		<p class="text">Vem vill fortsätta vara gift?</p>
+		<p class="text">{PageTitle[data.show.replace(/-/g, '')]}</p>
 		{#if start}
 			<Swiper couples={data.people} {userId} show={data.show} />
 		{/if}

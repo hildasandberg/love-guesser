@@ -37,7 +37,10 @@
 					<th />
 					{#each data.results as p}
 						<th>
-							<div class="image-container" style="background-image: url({getImage(p.id)}); " />
+							<div
+								class={`image-container ${data.show === 'gvfo-sen' ? 'image-wide' : 'image-high'}`}
+								style="background-image: url({getImage(p.id)}); "
+							/>
 						</th>
 					{/each}
 				</tr>
@@ -75,8 +78,14 @@
 		background-color: white;
 		border-radius: 5px;
 		background-position: center;
+	}
+	.image-high {
 		height: 80px;
 		width: 50px;
+	}
+	.image-wide {
+		height: 60px;
+		width: 80px;
 	}
 	table {
 		background-color: white;
@@ -108,9 +117,16 @@
 		.image-container {
 			border-radius: 5px;
 			background-position: center;
+		}
+		.image-high {
 			height: 50px;
 			width: 30px;
 		}
+		.image-wide {
+			height: 60px;
+			width: 80px;
+		}
+
 		table {
 			background-color: white;
 			border-radius: 14px;
